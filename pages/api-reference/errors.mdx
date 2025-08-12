@@ -1,0 +1,165 @@
+# Error Reference
+
+The SocialKit API uses conventional HTTP response codes to indicate the success or failure of an API request. Here are the possible error responses you might encounter:
+
+## Error Codes
+
+### 400 Bad Request
+
+Returned when the request is malformed or missing required parameters.
+
+```json
+{
+	"success": false,
+	"message": "The \"url\" field is missing"
+}
+```
+
+### 401 Unauthorized
+
+Returned when no access key is provided.
+
+```json
+{
+	"success": false,
+	"message": "Access key is missing"
+}
+```
+
+### 403 Forbidden
+
+Returned when the provided access key is invalid:
+
+```json
+{
+	"success": false,
+	"message": "Invalid Access key"
+}
+```
+
+Or when you've exceeded your monthly request limit:
+
+```json
+{
+	"success": false,
+	"message": "Request limit exceeded for this month"
+}
+```
+
+Or when access to the video transcript is denied:
+
+```json
+{
+	"success": false,
+	"message": "Access denied - transcript may be disabled"
+}
+```
+
+### 404 Not Found
+
+Returned when the requested video cannot be found or the transcript is not available:
+
+```json
+{
+	"success": false,
+	"message": "Video not found or transcript not available"
+}
+```
+
+### 408 Request Timeout
+
+Returned when the request takes too long to process, often with very long videos:
+
+```json
+{
+	"success": false,
+	"message": "Request timeout - video may be too long"
+}
+```
+
+### 422 Unprocessable Entity
+
+Returned when the YouTube URL format is invalid:
+
+```json
+{
+	"success": false,
+	"message": "Invalid YouTube URL format"
+}
+```
+
+Or when the video ID format is invalid:
+
+```json
+{
+	"success": false,
+	"message": "Invalid YouTube video ID format"
+}
+```
+
+### 429 Too Many Requests
+
+```json
+{
+	"success": false,
+	"message": "Rate limit exceeded, retry in 59 seconds"
+}
+```
+
+### 500 Internal Server Error
+
+Returned when the server encounters an unexpected error:
+
+```json
+{
+	"success": false,
+	"message": "Internal server error"
+}
+```
+
+Or when the Lambda API encounters an error:
+
+```json
+{
+	"success": false,
+	"message": "Lambda API server error"
+}
+```
+
+## Video-Specific Errors
+
+### No Transcript Available
+
+Returned when a video exists but doesn't have transcript data:
+
+```json
+{
+	"success": false,
+	"message": "No transcript available for this video"
+}
+```
+
+### Video Validation Failed
+
+Returned when video validation encounters an unexpected error:
+
+```json
+{
+	"success": false,
+	"message": "Video validation failed: [specific error details]"
+}
+```
+
+## Error Response Format
+
+All error responses follow this consistent format:
+
+```json
+{
+	"success": false,
+	"message": "Error description"
+}
+```
+
+Some errors may include additional fields for debugging purposes, but the `success` and `message` fields are always present in error responses.
+
