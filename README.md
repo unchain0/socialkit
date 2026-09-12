@@ -19,9 +19,9 @@ Click the button to clone this repository and deploy it on Vercel:
 
 ## Local Development
 
-First, run `npm install` to install the dependencies.
+First, run `yarn install` to install the dependencies (this project uses Yarn Classic with a committed `yarn.lock`, which includes security resolutions).
 
-Then, run `npm run dev` to start the development server and visit localhost:3000.
+Then, run `yarn dev` to start the development server and visit localhost:3000.
 
 ## License
 
