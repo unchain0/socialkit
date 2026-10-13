@@ -1,0 +1,1 @@
+# authentication\nHow to get: /authentication\nDrive: playwright cdp on /authentication\nGotchas: requires valid access key
