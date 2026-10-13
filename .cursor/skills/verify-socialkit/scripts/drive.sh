@@ -40,19 +40,14 @@ case "$COMMAND" in
       printf '%s\n' "path must start with /" >&2
       exit 2
     fi
-    code="$(curl --silent --output "$OUT" --write-out '%{http_code}' --max-time 30 "${ORIGIN}${PATH_ARG}" || true)"
-    curl_exit=0
-    # re-run only to capture exit if needed; we already have body
-    printf '%s' "$code" >"${OUT}.status"
-    # Determine curl exit by a cheap HEAD-less GET status recheck pattern: treat non-200 as soft fail for exit file
-    if [[ "$code" == "000" || -z "$code" ]]; then
-      curl_exit=7
-    else
-      curl_exit=0
-    fi
+    set +e
+    code="$(curl --silent --output "$OUT" --write-out '%{http_code}' --max-time 30 "${ORIGIN}${PATH_ARG}")"
+    curl_exit=$?
+    set -e
+    printf '%s' "${code:-000}" >"${OUT}.status"
     printf '%s\n' "$curl_exit" >"${OUT}.exit"
-    log "fetch path=${PATH_ARG} status=${code} exit=${curl_exit} out=${OUT}"
-    if [[ "$code" != "200" ]]; then
+    log "fetch path=${PATH_ARG} status=${code:-000} exit=${curl_exit} out=${OUT}"
+    if [[ "$curl_exit" -ne 0 || "$code" != "200" ]]; then
       exit 1
     fi
     ;;
@@ -135,11 +130,14 @@ case "$COMMAND" in
       local path="$1" marker="$2"
       local tmp body code
       tmp="$(mktemp)"
-      code="$(curl --silent --output "$tmp" --write-out '%{http_code}' --max-time 30 "${ORIGIN}${path}" || true)"
-      if [[ "$code" == "200" ]] && grep -qF -- "$marker" "$tmp"; then
-        printf 'OK status=%s path=%s marker=%s\n' "$code" "$path" "$marker" >>"$OUT"
+      set +e
+      code="$(curl --silent --output "$tmp" --write-out '%{http_code}' --max-time 30 "${ORIGIN}${path}")"
+      curl_exit=$?
+      set -e
+      if [[ "$curl_exit" -eq 0 && "$code" == "200" ]] && grep -qF -- "$marker" "$tmp"; then
+        printf 'OK status=%s exit=%s path=%s marker=%s\n' "$code" "$curl_exit" "$path" "$marker" >>"$OUT"
       else
-        printf 'FAIL status=%s path=%s marker=%s\n' "$code" "$path" "$marker" >>"$OUT"
+        printf 'FAIL status=%s exit=%s path=%s marker=%s\n' "${code:-000}" "$curl_exit" "$path" "$marker" >>"$OUT"
         fail=1
       fi
       rm -f "$tmp"
