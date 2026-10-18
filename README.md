@@ -1,224 +1,144 @@
 # SocialKit Documentation
 
-The official documentation site for [SocialKit](https://www.socialkit.dev) — a powerful API for analyzing social media
-videos. Built with Next.js 15, Nextra, and Tailwind CSS.
+Official documentation site for [SocialKit](https://www.socialkit.dev): a developer API for analyzing social media
+videos (summaries, transcripts, engagement stats). Built with Next.js, Nextra, and Tailwind CSS.
 
-![SocialKit Documentation Hero](docs/assets/hero.png)
+[![CI](https://github.com/unchain0/socialkit/actions/workflows/ci.yml/badge.svg)](https://github.com/unchain0/socialkit/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
+[![Node.js](https://img.shields.io/badge/node-%3E%3D20-brightgreen.svg)](https://nodejs.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-strict-blue.svg)](https://www.typescriptlang.org/)
+[![Yarn](https://img.shields.io/badge/yarn-1.22-2C8EBB.svg)](https://yarnpkg.com/)
 
-## Badges
+![SocialKit docs home (Introduction)](docs/assets/hero.png)
 
-[![CI](https://github.com/geiger01/socialkit-docs/actions/workflows/ci.yml/badge.svg)](https://github.com/geiger01/socialkit-docs/actions/workflows/ci.yml)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Node.js Version](https://img.shields.io/badge/node-%3E%3D20.0.0-brightgreen.svg)](https://nodejs.org/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.5-blue.svg)](https://www.typescriptlang.org/)
-[![Next.js](https://img.shields.io/badge/Next.js-15-black.svg)](https://nextjs.org/)
+![SocialKit Getting Started page](docs/assets/features.png)
+
+![YouTube Summary API reference](docs/assets/api-reference.png)
+
+## Project sheet
+
+| Field  | Value                                     |
+| ------ | ----------------------------------------- |
+| Goal   | Host SocialKit API docs as a static site  |
+| Status | Active documentation                      |
+| Stack  | Next.js 14 · Nextra 3 · TypeScript · Yarn |
+| URL    | https://www.socialkit.dev                 |
 
 ## Features
 
-- **Video Summaries** — AI-powered summaries with key insights, main topics, tone analysis, and notable quotes
-- **Video Transcripts** — Accurate transcripts with timestamped segments for content analysis and accessibility
-- **Custom AI Analysis** — Define custom response fields and prompts for tailored insights
-- **Video Stats** — Real-time engagement metrics: views, likes, comments, and channel information
-- **Multi-Platform Support** — YouTube now, with TikTok and Instagram coming soon
-- **Developer-First** — Simple REST API with multiple authentication methods
+- Video summaries with key insights, topics, tone, and quotes
+- Timestamped transcripts for analysis and accessibility
+- Custom AI analysis fields and prompts
+- Live video stats (views, likes, comments, channel)
+- Multi-platform roadmap (YouTube first; TikTok and Instagram planned)
+- REST-focused docs with multiple auth methods
 
-## Screenshots
-
-### Documentation Home
-
-![Documentation Home](docs/assets/hero.png)
-
-### API Features Overview
-
-![API Features](docs/assets/features.png)
-
-## Quick Start
+## Quick start
 
 ### Prerequisites
 
-- Node.js ≥ 20.0.0
-- Yarn ≥ 1.22.0
+- Node.js ≥ 20 (`nvm use` reads `.nvmrc`)
+- Yarn 1.22+
 
-### Installation
+### Install and run
 
 ```bash
-# Clone the repository
-git clone https://github.com/geiger01/socialkit-docs.git
-cd socialkit-docs
-
-# Install dependencies (uses frozen lockfile for reproducibility)
+git clone https://github.com/unchain0/socialkit.git
+cd socialkit
 yarn install --frozen-lockfile
-
-# Start development server
 yarn dev
 ```
 
-Visit `http://localhost:3000` to view the documentation site.
+Open http://localhost:3000.
 
-### Available Scripts
+### Scripts
 
-| Command             | Description                      |
-| ------------------- | -------------------------------- |
-| `yarn dev`          | Start development server         |
-| `yarn build`        | Build for production             |
-| `yarn start`        | Start production server          |
-| `yarn lint`         | Run ESLint with zero warnings    |
-| `yarn lint:fix`     | Auto-fix ESLint issues           |
-| `yarn typecheck`    | Run TypeScript type checking     |
-| `yarn format`       | Format code with Prettier        |
-| `yarn format:check` | Check formatting without changes |
-| `yarn check`        | Run format, lint, and typecheck  |
-| `yarn audit`        | Run npm audit (high severity)    |
-| `yarn audit:fix`    | Attempt to fix audit issues      |
+| Command              | Description                                |
+| -------------------- | ------------------------------------------ |
+| `yarn dev`           | Development server                         |
+| `yarn build`         | Production build                           |
+| `yarn start`         | Serve production build                     |
+| `yarn lint`          | ESLint (zero warnings)                     |
+| `yarn complexity`    | Complexity and file/function size limits   |
+| `yarn typecheck`     | TypeScript strict check                    |
+| `yarn test`          | Unit tests (Vitest)                        |
+| `yarn test:coverage` | Tests with ≥90% branch coverage thresholds |
+| `yarn format:check`  | Prettier check                             |
+| `yarn verify`        | Format + lint + types + coverage           |
+| `yarn audit`         | Dependency audit (high/critical gate)      |
 
 ## Usage
 
-The documentation site is a static Next.js application that renders MDX content using Nextra. Pages are located in the
-`pages/` directory:
+Pages live under `pages/` as MDX:
 
 - `pages/index.mdx` — Introduction
-- `pages/getting-started.mdx` — Getting Started guide
-- `pages/authentication.mdx` — Authentication documentation
-- `pages/api-reference/` — API Reference pages
+- `pages/getting-started.mdx` — First request
+- `pages/authentication.mdx` — Access keys
+- `pages/api-reference/` — Endpoint reference
 
-### Configuration
-
-Key configuration files:
-
-- `theme.config.jsx` — Nextra theme configuration (logo, navigation, SEO)
-- `tailwind.config.js` — Tailwind CSS configuration
-- `next.config.mjs` — Next.js configuration with Nextra plugin
-- `tsconfig.json` — Strict TypeScript configuration
+Theme and SEO: `theme.config.jsx`. Next.js + security headers: `next.config.mjs`.
 
 ## Architecture
 
 ```mermaid
-graph TD
-    A[Next.js 15 App Router] --> B[Nextra Theme Docs]
-    B --> C[MDX Content in pages/]
-    C --> D[Static Generation]
-    D --> E[Deploy to Vercel/Static Hosting]
-    B --> F[Tailwind CSS]
-    F --> G[Responsive Design]
-    B --> H[TypeScript Strict Mode]
-    H --> I[Type Safety]
+flowchart LR
+  MDX[MDX pages] --> Nextra[Nextra docs theme]
+  Nextra --> Next[Next.js 14 pages router]
+  Next --> Static[Static HTML/JS]
+  TS[TypeScript strict] --> Next
+  Tailwind[Tailwind CSS] --> Nextra
 ```
 
-### Tech Stack
+## Development standards
 
-- **Framework**: Next.js 15 (React 18)
-- **Documentation Theme**: Nextra (nextra-theme-docs)
-- **Styling**: Tailwind CSS 3
-- **Language**: TypeScript 5 (strict mode)
-- **Linting**: ESLint 8 with TypeScript, React, Import, JSX-A11y plugins
-- **Formatting**: Prettier 3
-- **Package Manager**: Yarn 1 (Classic)
-
-## Development
-
-### Code Quality Standards
-
-This project enforces strict engineering standards:
-
-- **TypeScript**: Strict mode with `noUncheckedIndexedAccess`, `noImplicitOverride`,
-  `noPropertyAccessFromIndexSignature`
-- **ESLint**: Type-checked rules for `.ts/.tsx`, standard rules for `.js/.jsx`
-- **Prettier**: Consistent formatting across all file types
-- **Zero Warnings**: CI fails on any lint or type error
-- **Cyclomatic Complexity**: Kept low via strict rules and small components
-
-### Running Checks Locally
+- **TypeScript**: `strict`, `noUncheckedIndexedAccess`, `noImplicitOverride`, `noPropertyAccessFromIndexSignature`
+- **ESLint**: type-checked rules for TS, React, import order, jsx-a11y, complexity ≤ 10, max 50 lines/function, max 400
+  lines/file, warnings as errors
+- **RNG / IDs**: `Math.random` is lint-banned; use `lib/uuid.ts` (`uuidv7` via `crypto.getRandomValues`)
+- **Tests**: Vitest + Testing Library; CI enforces 90% branch coverage on covered modules
+- **Dependencies**: lockfile required; Renovate opens PRs (automerge patch only); OSV-Scanner + npm audit in CI
+- **Secrets**: Gitleaks in CI; no secrets in the repo
 
 ```bash
-# Run all checks (format, lint, typecheck)
-yarn check
-
-# Or individually
-yarn format:check
-yarn lint
-yarn typecheck
+yarn verify
+yarn complexity
+yarn test:coverage
+yarn audit
 ```
 
-### Pre-commit Hooks
+## CI/CD
 
-Install Husky for local pre-commit validation (optional but recommended):
+Workflow: `.github/workflows/ci.yml` on every push and PR to `main`.
 
-```bash
-npx husky install
-npx husky add .husky/pre-commit "yarn check"
-```
+| Job                  | Purpose                         |
+| -------------------- | ------------------------------- |
+| Lint                 | ESLint + Prettier               |
+| Complexity           | Complexity and size limits      |
+| Type Check           | `tsc --noEmit`                  |
+| Tests                | Vitest with coverage thresholds |
+| Build                | Next.js production build        |
+| Dependency Audit     | npm audit gate + OSV-Scanner    |
+| Secret Scan          | Gitleaks                        |
+| Actionlint           | Workflow lint                   |
+| Zizmor               | Actions security audit          |
+| Conventional Commits | commitlint on PR range          |
 
-## CI/CD Pipeline
-
-The GitHub Actions workflow (`.github/workflows/ci.yml`) runs on every push and PR:
-
-| Job           | Description                        |
-| ------------- | ---------------------------------- |
-| `lint`        | ESLint + Prettier formatting check |
-| `typecheck`   | TypeScript strict type checking    |
-| `build`       | Next.js production build           |
-| `audit`       | npm audit (high) + OSV-Scanner     |
-| `secret-scan` | Gitleaks secret detection          |
-| `actionlint`  | GitHub Actions workflow linting    |
-| `zizmor`      | GitHub Actions security analysis   |
-
-All jobs run on `ubuntu-latest` with:
-
-- Least-privilege permissions (`contents: read`)
-- Concurrency control with cancel-in-progress
-- Action pins to full commit SHAs
-- Timeout limits on every job
-
-## Security
-
-- **Dependencies**: Scanned via npm audit and OSV-Scanner in CI
-- **Secrets**: Gitleaks runs in CI and can run locally via pre-commit
-- **Headers**: CSP, HSTS, X-Frame-Options configured via Next.js
-- **Input Validation**: All external data validated at boundaries
-
-## Deployment
-
-The site is designed for static export and can be deployed to:
-
-- **Vercel** (recommended) — Zero-config deployment
-- **Netlify** — Static site hosting
-- **GitHub Pages** — Via Actions
-- **Any static host** — `yarn build` outputs to `.next/`
-
-### Vercel Deployment
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?s=https%3A%2F%2Fgithub.com%2Fgeiger01%2Fsocialkit-docs&showOptionalTeamCreation=false)
-
-Or connect your GitHub repository to Vercel for automatic deployments on push.
+Guarantees: `permissions.contents: read`, concurrency cancel-in-progress, full commit-SHA action pins, `timeout-minutes`
+on every job, GitHub-hosted `ubuntu-latest`, no `continue-on-error`.
 
 ## Contributing
 
-1. Fork the repository
-2. Create a feature branch: `git checkout -b feat/your-feature`
-3. Make changes with tests/docs updates
-4. Run `yarn check` to validate
-5. Commit using [Conventional Commits](https://www.conventionalcommits.org/)
-6. Push and open a Pull Request
-
-### Commit Message Format
-
-```
-<type>(<scope>): <description>
-
-[optional body]
-
-[optional footer]
-```
-
-Types: `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `chore`, `ci`
+1. Fork and branch from `main` (`feat/…`, `fix/…`, `chore/…`)
+2. Keep changes covered by `yarn verify`
+3. Use [Conventional Commits](https://www.conventionalcommits.org/)
+4. Open a PR against `main`
 
 ## License
 
-This project is licensed under the MIT License — see [LICENSE](LICENSE) for details.
+MIT. See [LICENSE](./LICENSE).
 
 ## Contact
 
-- **Website**: [https://www.socialkit.dev](https://www.socialkit.dev)
-- **API Base URL**: `https://api.socialkit.dev`
-- **Issues**: [GitHub Issues](https://github.com/geiger01/socialkit-docs/issues)
-- **Repository**: [github.com/geiger01/socialkit-docs](https://github.com/geiger01/socialkit-docs)
+- Product site: https://www.socialkit.dev
+- API base: `https://api.socialkit.dev`
+- Issues: https://github.com/unchain0/socialkit/issues

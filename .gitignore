@@ -1,3 +1,8 @@
 .next
 node_modules
 .verify-evidence/
+coverage/
+.actionlint*
+actionlint
+*.tsbuildinfo
+

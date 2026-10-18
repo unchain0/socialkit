@@ -7,25 +7,29 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint . --ext .js,.jsx,.ts,.tsx,.mdx --max-warnings 0",
-    "lint:fix": "eslint . --ext .js,.jsx,.ts,.tsx,.mdx --fix",
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx --max-warnings 0",
+    "lint:fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
+    "complexity": "eslint components lib scripts --ext .js,.jsx,.ts,.tsx --max-warnings 0 --rule 'complexity: [error, { max: 10 }]' --rule 'max-lines-per-function: [error, { max: 50, skipBlankLines: true, skipComments: true }]' --rule 'max-lines: [error, { max: 400, skipBlankLines: true, skipComments: true }]'",
     "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md,mdx,css,yml,yaml}\"",
     "format:check": "prettier --check \"**/*.{js,jsx,ts,tsx,json,md,mdx,css,yml,yaml}\"",
-    "check": "yarn format:check && yarn lint && yarn typecheck",
+    "verify": "yarn format:check && yarn lint && yarn typecheck && yarn test:coverage",
     "audit": "node scripts/audit.js",
-    "audit:fix": "npm audit fix"
+    "audit:fix": "npm audit fix",
+    "commitlint": "commitlint"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/geiger01/socialkit-docs.git"
+    "url": "git+https://github.com/unchain0/socialkit.git"
   },
   "author": "SocialKit Team",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/geiger01/socialkit-docs/issues"
+    "url": "https://github.com/unchain0/socialkit/issues"
   },
-  "homepage": "https://github.com/geiger01/socialkit-docs#readme",
+  "homepage": "https://github.com/unchain0/socialkit#readme",
   "resolutions": {
     "lodash-es": "^4.18.0",
     "remark-reading-time": "^2.1.0",
@@ -45,11 +49,18 @@
     "tailwindcss": "^3.3.6"
   },
   "devDependencies": {
+    "@commitlint/cli": "19.8.1",
+    "@commitlint/config-conventional": "19.8.1",
+    "@testing-library/dom": "10.4.0",
+    "@testing-library/jest-dom": "6.6.3",
+    "@testing-library/react": "16.3.0",
     "@types/node": "20.14.10",
     "@types/react": "18.3.3",
     "@types/react-dom": "18.3.0",
     "@typescript-eslint/eslint-plugin": "^7.17.0",
     "@typescript-eslint/parser": "^7.17.0",
+    "@vitejs/plugin-react": "4.5.2",
+    "@vitest/coverage-v8": "3.2.4",
     "eslint": "^8.57.0",
     "eslint-config-next": "^15.5.24",
     "eslint-config-prettier": "^9.1.0",
@@ -58,8 +69,10 @@
     "eslint-plugin-mdx": "^3.1.5",
     "eslint-plugin-react": "^7.35.0",
     "eslint-plugin-react-hooks": "^4.6.2",
+    "jsdom": "26.1.0",
     "prettier": "^3.3.3",
-    "typescript": "^5.5.3"
+    "typescript": "^5.5.3",
+    "vitest": "3.2.4"
   },
   "engines": {
     "node": ">=20.0.0",

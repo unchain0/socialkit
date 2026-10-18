@@ -20,6 +20,6 @@
     "allowUnreachableCode": false,
     "allowUnusedLabels": false
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "theme.config.jsx"],
+  "include": ["next-env.d.ts", "css-modules.d.ts", "**/*.ts", "**/*.tsx", "theme.config.jsx"],
   "exclude": ["node_modules", ".next", "out"]
 }

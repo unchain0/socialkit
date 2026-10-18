@@ -1,0 +1,14 @@
+repos:
+  - repo: https://github.com/gitleaks/gitleaks
+    rev: v8.24.3
+    hooks:
+      - id: gitleaks
+
+  - repo: local
+    hooks:
+      - id: yarn-verify
+        name: yarn verify (format, lint, types, coverage)
+        entry: yarn verify
+        language: system
+        pass_filenames: false
+        types: [file]

@@ -94,6 +94,14 @@ module.exports = {
     'jsx-a11y/role-has-required-aria-props': 'error',
     complexity: ['error', { max: 10 }],
     'max-lines-per-function': ['error', { max: 50, skipBlankLines: true, skipComments: true }],
+    'max-lines': ['error', { max: 400, skipBlankLines: true, skipComments: true }],
+    'no-restricted-syntax': [
+      'error',
+      {
+        selector: "CallExpression[callee.object.name='Math'][callee.property.name='random']",
+        message: 'Use crypto.getRandomValues / uuidv7 (CSPRNG) instead of Math.random()',
+      },
+    ],
   },
   ignorePatterns: [
     'node_modules/',
@@ -108,6 +116,11 @@ module.exports = {
     'next-env.d.ts',
     '.eslintrc.js',
     '**/*.mdx',
+    '**/*.test.ts',
+    '**/*.test.tsx',
+    'vitest.config.ts',
+    'vitest.setup.ts',
+    'coverage/',
   ],
   overrides: [
     {

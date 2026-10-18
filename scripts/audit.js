@@ -1,22 +1,30 @@
 #!/usr/bin/env node
-// Custom audit script that filters out known acceptable vulnerabilities
-// for this static documentation site
+/* eslint-disable @typescript-eslint/no-var-requires -- CommonJS Node script without package "type":"module" */
+'use strict';
 
-import { execSync } from 'child_process';
+const { execSync } = require('child_process');
 
 const ACCEPTABLE_ADVISORIES = new Set([
-  // Next.js 14.x vulnerabilities that don't apply to static Linux-hosted docs site
+  // Next.js 14.x issues that do not apply to a static Linux-hosted docs site
   '1193677', // Unauthenticated RCE on Windows-hosted servers
   '1193733', // Unauthenticated RCE in Image Optimization API with AVIF
 ]);
+
+function advisoryUrl(vuln) {
+  const first = Array.isArray(vuln.via) ? vuln.via[0] : null;
+  if (first && typeof first === 'object' && first.url) {
+    return first.url;
+  }
+  return 'unknown';
+}
 
 function isAcceptable(vuln) {
   const via = vuln.via;
   if (!Array.isArray(via)) return false;
 
-  for (const v of via) {
-    if (typeof v === 'object' && v.url) {
-      const advisoryId = v.url.split('/').pop();
+  for (const entry of via) {
+    if (typeof entry === 'object' && entry !== null && entry.url) {
+      const advisoryId = String(entry.url).split('/').pop();
       if (ACCEPTABLE_ADVISORIES.has(advisoryId)) {
         return true;
       }
@@ -33,13 +41,8 @@ function collectVulnerabilities(audit) {
 
   for (const [name, vuln] of Object.entries(audit.vulnerabilities)) {
     if (isAcceptable(vuln)) continue;
-
-    const severity = vuln.severity;
-    if (severity === 'critical') {
-      critical.push({ name, ...vuln });
-    } else if (severity === 'high') {
-      high.push({ name, ...vuln });
-    }
+    if (vuln.severity === 'critical') critical.push({ name, ...vuln });
+    else if (vuln.severity === 'high') high.push({ name, ...vuln });
   }
 
   return { critical, high };
@@ -64,22 +67,19 @@ function runAudit() {
   }
 }
 
+function printList(label, list, writer) {
+  if (list.length === 0) return;
+  writer(`${label}:`);
+  for (const vuln of list) {
+    writer(`  - ${vuln.name}: ${advisoryUrl(vuln)}`);
+  }
+}
+
 function reportAndExit(critical, high) {
-  if (critical.length > 0) {
-    console.error('Critical vulnerabilities found:');
-    for (const vuln of critical) {
-      console.error(`  - ${vuln.name}: ${vuln.via[0]?.url || 'unknown'}`);
-    }
-    process.exit(1);
-  }
+  printList('Critical vulnerabilities found', critical, console.error);
+  if (critical.length > 0) process.exit(1);
 
-  if (high.length > 0) {
-    console.warn('High vulnerabilities found (informational):');
-    for (const vuln of high) {
-      console.warn(`  - ${vuln.name}: ${vuln.via[0]?.url || 'unknown'}`);
-    }
-  }
-
+  printList('High vulnerabilities found (informational)', high, console.warn);
   console.log('Audit passed: no unacceptable critical vulnerabilities');
   process.exit(0);
 }
