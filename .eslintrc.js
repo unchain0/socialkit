@@ -92,6 +92,8 @@ module.exports = {
     'jsx-a11y/click-events-have-key-events': 'error',
     'jsx-a11y/no-noninteractive-element-interactions': 'error',
     'jsx-a11y/role-has-required-aria-props': 'error',
+    complexity: ['error', { max: 10 }],
+    'max-lines-per-function': ['error', { max: 50, skipBlankLines: true, skipComments: true }],
   },
   ignorePatterns: [
     'node_modules/',

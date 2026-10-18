@@ -7,6 +7,7 @@ interface ILogoProps {
   _className?: string;
 }
 
+// eslint-disable-next-line max-lines-per-function -- SVG path data for logo variants (light/dark/mini) are declarative assets, not logic
 export const Logo = ({ mini = false, _className = '' }: ILogoProps) => {
   const { resolvedTheme } = useTheme();
   const [loaded, setLoaded] = useState(false);

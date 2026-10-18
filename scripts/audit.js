@@ -4,115 +4,92 @@
 
 import { execSync } from 'child_process';
 
-const ACCEPTABLE_ADVISORIES = [
+const ACCEPTABLE_ADVISORIES = new Set([
   // Next.js 14.x vulnerabilities that don't apply to static Linux-hosted docs site
-  '1193677', // Unauthenticated Remote Code Execution on windows-hosted servers
-  '1193733', // Unauthenticated Remote Code Execution in Image Optimization API when AVIF files are used
-];
+  '1193677', // Unauthenticated RCE on Windows-hosted servers
+  '1193733', // Unauthenticated RCE in Image Optimization API with AVIF
+]);
+
+function isAcceptable(vuln) {
+  const via = vuln.via;
+  if (!Array.isArray(via)) return false;
+
+  for (const v of via) {
+    if (typeof v === 'object' && v.url) {
+      const advisoryId = v.url.split('/').pop();
+      if (ACCEPTABLE_ADVISORIES.has(advisoryId)) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
+function collectVulnerabilities(audit) {
+  const critical = [];
+  const high = [];
+
+  if (!audit.vulnerabilities) return { critical, high };
+
+  for (const [name, vuln] of Object.entries(audit.vulnerabilities)) {
+    if (isAcceptable(vuln)) continue;
+
+    const severity = vuln.severity;
+    if (severity === 'critical') {
+      critical.push({ name, ...vuln });
+    } else if (severity === 'high') {
+      high.push({ name, ...vuln });
+    }
+  }
+
+  return { critical, high };
+}
+
+function runAudit() {
+  try {
+    const output = execSync('npm audit --json', {
+      encoding: 'utf8',
+      stdio: ['pipe', 'pipe', 'ignore'],
+    });
+    return JSON.parse(output);
+  } catch (error) {
+    if (error.stdout) {
+      try {
+        return JSON.parse(error.stdout.toString());
+      } catch {
+        // fall through
+      }
+    }
+    throw error;
+  }
+}
+
+function reportAndExit(critical, high) {
+  if (critical.length > 0) {
+    console.error('Critical vulnerabilities found:');
+    for (const vuln of critical) {
+      console.error(`  - ${vuln.name}: ${vuln.via[0]?.url || 'unknown'}`);
+    }
+    process.exit(1);
+  }
+
+  if (high.length > 0) {
+    console.warn('High vulnerabilities found (informational):');
+    for (const vuln of high) {
+      console.warn(`  - ${vuln.name}: ${vuln.via[0]?.url || 'unknown'}`);
+    }
+  }
+
+  console.log('Audit passed: no unacceptable critical vulnerabilities');
+  process.exit(0);
+}
 
 function main() {
   try {
-    // Run npm audit with JSON output, suppress stderr completely
-    const output = execSync('npm audit --json', {
-      encoding: 'utf8',
-      stdio: ['pipe', 'pipe', 'ignore'], // ignore stderr
-    });
-    const audit = JSON.parse(output);
-
-    const criticalVulns = [];
-    const highVulns = [];
-
-    if (audit.vulnerabilities) {
-      for (const [name, vuln] of Object.entries(audit.vulnerabilities)) {
-        const severity = vuln.severity;
-        const via = vuln.via;
-
-        for (const v of via) {
-          if (typeof v === 'object' && v.url) {
-            const advisoryId = v.url.split('/').pop();
-            if (ACCEPTABLE_ADVISORIES.includes(advisoryId)) {
-              continue; // Skip acceptable advisory
-            }
-          }
-
-          if (severity === 'critical') {
-            criticalVulns.push({ name, ...vuln });
-          } else if (severity === 'high') {
-            highVulns.push({ name, ...vuln });
-          }
-        }
-      }
-    }
-
-    if (criticalVulns.length > 0) {
-      console.error('Critical vulnerabilities found:');
-      for (const vuln of criticalVulns) {
-        console.error(`  - ${vuln.name}: ${vuln.via[0]?.url || 'unknown'}`);
-      }
-      process.exit(1);
-    }
-
-    if (highVulns.length > 0) {
-      console.warn('High vulnerabilities found (informational):');
-      for (const vuln of highVulns) {
-        console.warn(`  - ${vuln.name}: ${vuln.via[0]?.url || 'unknown'}`);
-      }
-    }
-
-    console.log('Audit passed: no unacceptable critical vulnerabilities');
-    process.exit(0);
+    const audit = runAudit();
+    const { critical, high } = collectVulnerabilities(audit);
+    reportAndExit(critical, high);
   } catch (error) {
-    // npm audit returns non-zero exit code when vulnerabilities found
-    // Try to parse the output anyway
-    if (error.stdout) {
-      try {
-        const audit = JSON.parse(error.stdout.toString());
-        const criticalVulns = [];
-        const highVulns = [];
-
-        if (audit.vulnerabilities) {
-          for (const [name, vuln] of Object.entries(audit.vulnerabilities)) {
-            const severity = vuln.severity;
-            const via = vuln.via;
-
-            for (const v of via) {
-              if (typeof v === 'object' && v.url) {
-                const advisoryId = v.url.split('/').pop();
-                if (ACCEPTABLE_ADVISORIES.includes(advisoryId)) {
-                  continue;
-                }
-              }
-
-              if (severity === 'critical') {
-                criticalVulns.push({ name, ...vuln });
-              } else if (severity === 'high') {
-                highVulns.push({ name, ...vuln });
-              }
-            }
-          }
-        }
-
-        if (criticalVulns.length > 0) {
-          console.error('Critical vulnerabilities found:');
-          for (const vuln of criticalVulns) {
-            console.error(`  - ${vuln.name}: ${vuln.via[0]?.url || 'unknown'}`);
-          }
-          process.exit(1);
-        }
-
-        if (highVulns.length > 0) {
-          console.warn('High vulnerabilities found (informational):');
-          for (const vuln of highVulns) {
-            console.warn(`  - ${vuln.name}: ${vuln.via[0]?.url || 'unknown'}`);
-          }
-        }
-
-        console.log('Audit passed: no unacceptable critical vulnerabilities');
-        process.exit(0);
-      } catch (e) {
-        // Ignore parse error, fall through
-      }
-    }
     console.error('Audit failed:', error.message);
     process.exit(1);
   }
