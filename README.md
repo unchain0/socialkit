@@ -56,8 +56,8 @@ Open http://localhost:3000.
 | Command              | Description                                |
 | -------------------- | ------------------------------------------ |
 | `yarn dev`           | Development server                         |
-| `yarn build`         | Production build                           |
-| `yarn start`         | Serve production build                     |
+| `yarn build`         | Production build (outputs to `out/`)       |
+| `yarn start`         | Serve production build (`next start`)      |
 | `yarn lint`          | ESLint (zero warnings)                     |
 | `yarn complexity`    | Complexity and file/function size limits   |
 | `yarn typecheck`     | TypeScript strict check                    |
@@ -76,7 +76,7 @@ Pages live under `pages/` as MDX:
 - `pages/authentication.mdx` — Access keys
 - `pages/api-reference/` — Endpoint reference
 
-Theme and SEO: `theme.config.jsx`. Next.js + security headers: `next.config.mjs`.
+Theme and SEO: `theme.config.jsx`. Next.js config: `next.config.mjs` (static export + security headers).
 
 ## Architecture
 
@@ -125,6 +125,15 @@ Workflow: `.github/workflows/ci.yml` on every push and PR to `main`.
 
 Guarantees: `permissions.contents: read`, concurrency cancel-in-progress, full commit-SHA action pins, `timeout-minutes`
 on every job, GitHub-hosted `ubuntu-latest`, no `continue-on-error`.
+
+## Deployment
+
+The site is configured for static export (`output: 'export'` in `next.config.mjs`). Running `yarn build` generates a
+self-contained `out/` directory suitable for any static host (GitHub Pages, Netlify, Cloudflare Pages, etc.).
+
+Security headers (CSP, HSTS, X-Frame-Options, etc.) are defined in `next.config.mjs` but **are not included in the
+static export** (Next.js does not apply custom headers to static output). Configure equivalent headers on your hosting
+platform (e.g., `_headers` file for Netlify, `Headers` for Cloudflare Pages, or web server config).
 
 ## Contributing
 

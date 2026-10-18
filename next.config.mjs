@@ -9,6 +9,8 @@ const withNextra = nextra({
 const nextConfig = {
   poweredByHeader: false,
   reactStrictMode: true,
+  output: 'export',
+  images: { unoptimized: true },
   async headers() {
     return [
       {

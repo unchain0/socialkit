@@ -2,47 +2,36 @@
 # Ignores known acceptable vulnerabilities for Next.js 14.x (required for Nextra 3.x + Pages Router)
 # and other transitive dependencies that don't affect static Linux-hosted documentation sites.
 
-# Ignore all vulnerabilities for Next.js 14.x
-# Next.js 15+ requires App Router, but Nextra 3.x only supports Pages Router
-# The vulnerabilities are Windows-specific RCE (GHSA-1193677) and AVIF Image Optimization RCE (GHSA-1193733)
-# which don't apply to static Linux-hosted documentation sites.
-[[PackageOverrides]]
-name = "next"
-ecosystem = "npm"
-vulnerability.ignore = true
-reason = "Next.js 14.x required for Nextra 3.x Pages Router compatibility; vulnerabilities are Windows-specific or AVIF Image Optimization RCE not applicable to static docs site"
+# Ignore specific Next.js 14.x vulnerabilities that don't apply to static Linux-hosted docs site
+# GHSA-p293-qw3h-jr36: Unauthenticated RCE on Windows-hosted servers (not applicable to Linux)
+# GHSA-2xp9-vwfh-vxw4: Unauthenticated RCE in Image Optimization API with AVIF (AVIF not used)
+[[IgnoredVulns]]
+id = "GHSA-p293-qw3h-jr36"
+reason = "Windows-specific RCE, not applicable to Linux-hosted static docs site"
+
+[[IgnoredVulns]]
+id = "GHSA-2xp9-vwfh-vxw4"
+reason = "AVIF Image Optimization RCE, AVIF not used in static docs site"
 
 # Ignore braces 3.0.3 vulnerability (GHSA-vfj7-8cjw-p6xm)
 # This is a transitive dependency that has been resolved via package.json resolutions
-[[PackageOverrides]]
-name = "braces"
-ecosystem = "npm"
-version = "3.0.3"
-vulnerability.ignore = true
-reason = "Resolved via package.json resolutions to >=3.0.3"
+[[IgnoredVulns]]
+id = "GHSA-vfj7-8cjw-p6xm"
+reason = "Resolved via package.json resolutions to >=3.0.3; no patch available but mitigated"
 
 # Ignore katex vulnerability (GHSA-238p-pmpm-9mq7) - low severity, doesn't affect static site
-[[PackageOverrides]]
-name = "katex"
-ecosystem = "npm"
-version = "0.16.47"
-vulnerability.ignore = true
-reason = "Low severity vulnerability in math rendering library, not applicable to static documentation site"
+[[IgnoredVulns]]
+id = "GHSA-238p-pmpm-9mq7"
+reason = "Low severity prototype pollution in math rendering library, not applicable to static documentation site"
 
 # Ignore postcss-selector-parser vulnerability (GHSA-rj75-hqrm-r3gf)
 # Fixed in 7.1.6 but would require major dependency updates
-[[PackageOverrides]]
-name = "postcss-selector-parser"
-ecosystem = "npm"
-version = "6.1.4"
-vulnerability.ignore = true
+[[IgnoredVulns]]
+id = "GHSA-rj75-hqrm-r3gf"
 reason = "Medium severity, would require breaking dependency updates"
 
 # Ignore sprintf-js vulnerability (GHSA-hp3w-g68c-fv3c)
 # No fix available
-[[PackageOverrides]]
-name = "sprintf-js"
-ecosystem = "npm"
-version = "1.0.3"
-vulnerability.ignore = true
+[[IgnoredVulns]]
+id = "GHSA-hp3w-g68c-fv3c"
 reason = "No fix available, low impact on static site"
