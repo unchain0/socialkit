@@ -1,13 +1,15 @@
 #!/usr/bin/env node
-/* eslint-disable @typescript-eslint/no-var-requires -- CommonJS Node script */
+/* eslint-disable @typescript-eslint/no-var-requires -- Node script */
 'use strict';
 
-const { execSync } = require('child_process');
+import { execSync } from 'child_process';
 
 const ACCEPTABLE_ADVISORIES = new Set([
   // Next.js 14.x issues that do not apply to a static Linux-hosted docs site
   'GHSA-p293-qw3h-jr36', // Unauthenticated RCE on Windows-hosted servers
   'GHSA-2xp9-vwfh-vxw4', // Unauthenticated RCE in Image Optimization API with AVIF
+  // Mitigated via package.json resolutions
+  'GHSA-vfj7-8cjw-p6xm', // braces prototype pollution, resolved to >=3.0.3
 ]);
 
 function advisoryUrl(vuln) {
@@ -26,25 +28,44 @@ function isAcceptable(vuln) {
   return ACCEPTABLE_ADVISORIES.has(advisoryId);
 }
 
+function parseAuditLine(line) {
+  if (!line || line.trim() === '') return null;
+
+  try {
+    return JSON.parse(line);
+  } catch {
+    return null;
+  }
+}
+
+function processAuditEntry(entry, critical, high) {
+  if (entry.type === 'error') {
+    throw new Error(`npm audit error: ${entry.message || JSON.stringify(entry)}`);
+  }
+  if (entry.type !== 'auditAdvisory') return;
+
+  const vuln = entry.data;
+  if (isAcceptable(vuln)) return;
+
+  const severity = vuln.advisory?.severity;
+  if (severity === 'critical') critical.push(vuln);
+  else if (severity === 'high') high.push(vuln);
+}
+
 function collectVulnerabilities(auditLines) {
   const critical = [];
   const high = [];
 
   for (const line of auditLines) {
-    if (!line || line.trim() === '') continue;
+    const entry = parseAuditLine(line);
+    if (!entry) continue;
 
     try {
-      const entry = JSON.parse(line);
-      if (entry.type !== 'auditAdvisory') continue;
-
-      const vuln = entry.data;
-      if (isAcceptable(vuln)) continue;
-
-      const severity = vuln.advisory?.severity;
-      if (severity === 'critical') critical.push(vuln);
-      else if (severity === 'high') high.push(vuln);
-    } catch {
-      // Skip malformed lines
+      processAuditEntry(entry, critical, high);
+    } catch (error) {
+      if (error.message.startsWith('npm audit error:')) {
+        throw error;
+      }
     }
   }
 
@@ -59,8 +80,6 @@ function runAudit() {
     });
     return output.trim().split('\n');
   } catch (error) {
-    // yarn audit returns non-zero exit code when vulnerabilities found
-    // but still outputs JSON to stdout
     if (error.stdout) {
       return error.stdout.toString().trim().split('\n');
     }
@@ -80,8 +99,10 @@ function reportAndExit(critical, high) {
   printList('Critical vulnerabilities found', critical, console.error);
   if (critical.length > 0) process.exit(1);
 
-  printList('High vulnerabilities found (informational)', high, console.warn);
-  console.log('Audit passed: no unacceptable critical vulnerabilities');
+  printList('High vulnerabilities found', high, console.error);
+  if (high.length > 0) process.exit(1);
+
+  console.log('Audit passed: no unacceptable critical or high vulnerabilities');
   process.exit(0);
 }
 
