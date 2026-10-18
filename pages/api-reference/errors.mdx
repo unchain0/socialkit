@@ -1,6 +1,7 @@
 # Error Reference
 
-The SocialKit API uses conventional HTTP response codes to indicate the success or failure of an API request. Here are the possible error responses you might encounter:
+The SocialKit API uses conventional HTTP response codes to indicate the success or failure of an API request. Here are
+the possible error responses you might encounter:
 
 ## Error Codes
 
@@ -10,8 +11,8 @@ Returned when the request is malformed or missing required parameters.
 
 ```json
 {
-	"success": false,
-	"message": "The \"url\" field is missing"
+  "success": false,
+  "message": "The \"url\" field is missing"
 }
 ```
 
@@ -21,8 +22,8 @@ Returned when no access key is provided.
 
 ```json
 {
-	"success": false,
-	"message": "Access key is missing"
+  "success": false,
+  "message": "Access key is missing"
 }
 ```
 
@@ -32,8 +33,8 @@ Returned when the provided access key is invalid:
 
 ```json
 {
-	"success": false,
-	"message": "Invalid Access key"
+  "success": false,
+  "message": "Invalid Access key"
 }
 ```
 
@@ -41,8 +42,8 @@ Or when you've exceeded your monthly request limit:
 
 ```json
 {
-	"success": false,
-	"message": "Request limit exceeded for this month"
+  "success": false,
+  "message": "Request limit exceeded for this month"
 }
 ```
 
@@ -50,8 +51,8 @@ Or when access to the video transcript is denied:
 
 ```json
 {
-	"success": false,
-	"message": "Access denied - transcript may be disabled"
+  "success": false,
+  "message": "Access denied - transcript may be disabled"
 }
 ```
 
@@ -61,8 +62,8 @@ Returned when the requested video cannot be found or the transcript is not avail
 
 ```json
 {
-	"success": false,
-	"message": "Video not found or transcript not available"
+  "success": false,
+  "message": "Video not found or transcript not available"
 }
 ```
 
@@ -72,8 +73,8 @@ Returned when the request takes too long to process, often with very long videos
 
 ```json
 {
-	"success": false,
-	"message": "Request timeout - video may be too long"
+  "success": false,
+  "message": "Request timeout - video may be too long"
 }
 ```
 
@@ -83,8 +84,8 @@ Returned when the YouTube URL format is invalid:
 
 ```json
 {
-	"success": false,
-	"message": "Invalid YouTube URL format"
+  "success": false,
+  "message": "Invalid YouTube URL format"
 }
 ```
 
@@ -92,8 +93,8 @@ Or when the video ID format is invalid:
 
 ```json
 {
-	"success": false,
-	"message": "Invalid YouTube video ID format"
+  "success": false,
+  "message": "Invalid YouTube video ID format"
 }
 ```
 
@@ -101,8 +102,8 @@ Or when the video ID format is invalid:
 
 ```json
 {
-	"success": false,
-	"message": "Rate limit exceeded, retry in 59 seconds"
+  "success": false,
+  "message": "Rate limit exceeded, retry in 59 seconds"
 }
 ```
 
@@ -112,8 +113,8 @@ Returned when the server encounters an unexpected error:
 
 ```json
 {
-	"success": false,
-	"message": "Internal server error"
+  "success": false,
+  "message": "Internal server error"
 }
 ```
 
@@ -121,8 +122,8 @@ Or when the Lambda API encounters an error:
 
 ```json
 {
-	"success": false,
-	"message": "Lambda API server error"
+  "success": false,
+  "message": "Lambda API server error"
 }
 ```
 
@@ -134,8 +135,8 @@ Returned when a video exists but doesn't have transcript data:
 
 ```json
 {
-	"success": false,
-	"message": "No transcript available for this video"
+  "success": false,
+  "message": "No transcript available for this video"
 }
 ```
 
@@ -145,8 +146,8 @@ Returned when video validation encounters an unexpected error:
 
 ```json
 {
-	"success": false,
-	"message": "Video validation failed: [specific error details]"
+  "success": false,
+  "message": "Video validation failed: [specific error details]"
 }
 ```
 
@@ -156,10 +157,10 @@ All error responses follow this consistent format:
 
 ```json
 {
-	"success": false,
-	"message": "Error description"
+  "success": false,
+  "message": "Error description"
 }
 ```
 
-Some errors may include additional fields for debugging purposes, but the `success` and `message` fields are always present in error responses.
-
+Some errors may include additional fields for debugging purposes, but the `success` and `message` fields are always
+present in error responses.

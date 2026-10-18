@@ -1,6 +1,7 @@
 # Errors
 
-Errors is the HTTP error reference for the SocialKit API: status codes, sample JSON bodies, and what each failure means for the caller.
+Errors is the HTTP error reference for the SocialKit API: status codes, sample JSON bodies, and what each failure means
+for the caller.
 
 ## Sub-features
 
@@ -26,12 +27,15 @@ Preconditions:
 - **Heading.** Run `scripts/drive.sh "$STATE" assert-contains "$EVIDENCE/errors.html" "Error Reference"`. Exit `0`.
 - **400 sample.** Run `scripts/drive.sh "$STATE" assert-contains "$EVIDENCE/errors.html" "400 Bad Request"`. Exit `0`.
 - **401 sample.** Run `scripts/drive.sh "$STATE" assert-contains "$EVIDENCE/errors.html" "401 Unauthorized"`. Exit `0`.
-- **Missing key message.** Run `scripts/drive.sh "$STATE" assert-contains "$EVIDENCE/errors.html" "Access key is missing"`. Exit `0`.
+- **Missing key message.** Run
+  `scripts/drive.sh "$STATE" assert-contains "$EVIDENCE/errors.html" "Access key is missing"`. Exit `0`.
 - **Screenshot.** Run `scripts/drive.sh "$STATE" screenshot /api-reference/errors "$EVIDENCE/errors.png"`.
-- **Proof.** Keep HTML + status + exit. Observing error docs is not the same as triggering live API errors; do not probe production.
+- **Proof.** Keep HTML + status + exit. Observing error docs is not the same as triggering live API errors; do not probe
+  production.
 
 ## Gotchas
 
 - The path is `/api-reference/errors`, not `/errors`.
-- Sample JSON in the page includes `"success": false`. Assert on the human headings when possible; minified bundles can also contain the string `success`.
+- Sample JSON in the page includes `"success": false`. Assert on the human headings when possible; minified bundles can
+  also contain the string `success`.
 - Never validate these codes by calling the real API without an explicit, separate, non-production harness.

@@ -1,6 +1,7 @@
 # YouTube Transcript API
 
-The YouTube Transcript API extracts accurate transcripts from YouTube videos, providing both full text and timestamped segments for content analysis and accessibility purposes.
+The YouTube Transcript API extracts accurate transcripts from YouTube videos, providing both full text and timestamped
+segments for content analysis and accessibility purposes.
 
 ## Endpoint
 
@@ -62,8 +63,8 @@ GET https://api.socialkit.dev/youtube/transcript?access_key=<your-access-key>&ur
 
 ## Parameters
 
-**`url`** <small style={{margin:'0 10px'}}>string</small> <small style={{color: 'red'}}>Required</small><br/>
-The YouTube URL of the video to extract transcript from. Supports various YouTube URL formats.
+**`url`** <small style={{margin:'0 10px'}}>string</small> <small style={{color: 'red'}}>Required</small><br/> The
+YouTube URL of the video to extract transcript from. Supports various YouTube URL formats.
 
 ---
 
@@ -72,25 +73,33 @@ Your API access key. Can be provided via the `access_key` query parameter, `x-ac
 
 ---
 
-**`cache`** <small style={{margin:'0 10px'}}>boolean</small> <small style={{margin:'0  10px  0 0'}}>Optional</small> <small>Defaults to false</small><br/>
-Cache the response for faster subsequent requests.
+**`cache`** <small style={{margin:'0 10px'}}>boolean</small> <small style={{margin:'0  10px  0 0'}}>Optional</small>
+
+<small>Defaults to false</small>
+<br /> Cache the response for faster subsequent requests.
 
 ---
 
-**`cache_ttl`** <small style={{margin:'0 10px'}}>number</small> <small style={{margin:'0  10px  0 0'}}>Optional</small> <small>Defaults to 2592000</small><br/>
-Cache the response for a custom TTL (in seconds). Maximum `2592000` seconds (1 month), minimum `3600` seconds (1 hour).
+**`cache_ttl`** <small style={{margin:'0 10px'}}>number</small> <small style={{margin:'0  10px  0 0'}}>Optional</small>
+
+<small>Defaults to 2592000</small>
+<br /> Cache the response for a custom TTL (in seconds). Maximum `2592000` seconds (1 month), minimum `3600` seconds (1
+hour).
 
 ## Response Structure
 
 The API returns both a complete transcript and individual timestamped segments:
 
 ### Full Transcript
+
 - **`transcript`**: Complete text transcript of the video
 - **`wordCount`**: Total number of words in the transcript
 - **`segments`**: Total number of transcript segments
 
 ### Timestamped Segments
+
 Each segment in `transcriptSegments` contains:
+
 - **`text`**: The spoken text for this segment
 - **`start`**: Start time in seconds
 - **`duration`**: Duration of the segment in seconds
@@ -104,4 +113,4 @@ Each segment in `transcriptSegments` contains:
 - **Content Creation**: Extract quotes and key phrases from videos
 - **Language Learning**: Provide text alongside audio for language learners
 - **Research**: Analyze large volumes of video content efficiently
-- **SEO**: Extract text content for search engine optimization 
+- **SEO**: Extract text content for search engine optimization
