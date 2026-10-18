@@ -117,6 +117,7 @@ jobs:
           scan-args: |
             --recursive
             --lockfile=yarn.lock
+            --config=osv-scanner.toml
             ./
 
   secret-scan:
