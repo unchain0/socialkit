@@ -112,9 +112,12 @@ jobs:
         run: yarn run audit
 
       - name: Run OSV-Scanner
-        uses: google/osv-scanner-action@v1
+        uses: google/osv-scanner-action/osv-scanner-action@v2.7.0
         with:
-          flags: --recursive --lockfile=yarn.lock
+          scan-args: |
+            --recursive
+            --lockfile=yarn.lock
+            ./
 
   secret-scan:
     name: Secret Scan
@@ -153,6 +156,12 @@ jobs:
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 
       - name: Run zizmor
-        uses: zizmor-org/zizmor-action@main
+        uses: zizmorcore/zizmor-action@v0.7.1
         with:
           version: latest
+          inputs: .
+          collect: default
+          online-audits: true
+          persona: regular
+          advanced-security: true
+          color: true
