@@ -189,7 +189,12 @@ jobs:
         run: |
           set -euo pipefail
           VERSION=1.7.7
-          curl -sSL "https://raw.githubusercontent.com/rhysd/actionlint/v${VERSION}/scripts/download-actionlint.bash" | bash -s -- "${VERSION}" .
+          COMMIT=03d0035246f3e81f36aed592ffb4bebf33a03106
+          ARCHIVE=actionlint_${VERSION}_linux_amd64.tar.gz
+          CHECKSUM=023070a287cd8cccd71515fedc843f1985bf96c436b7effaecce67290e7e0757
+          curl -sSL "https://github.com/rhysd/actionlint/releases/download/v${VERSION}/${ARCHIVE}" -o "${ARCHIVE}"
+          echo "${CHECKSUM}  ${ARCHIVE}" | sha256sum -c -
+          tar -xzf "${ARCHIVE}" actionlint
           ./actionlint -color
 
   zizmor:

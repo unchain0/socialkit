@@ -17,7 +17,6 @@
     "format:check": "prettier --check \"**/*.{js,jsx,ts,tsx,json,md,mdx,css,yml,yaml}\"",
     "verify": "yarn format:check && yarn lint && yarn typecheck && yarn test:coverage",
     "audit": "node scripts/audit.mjs",
-    "audit:fix": "npm audit fix",
     "commitlint": "commitlint"
   },
   "repository": {
