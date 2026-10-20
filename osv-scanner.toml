@@ -30,6 +30,46 @@ reason = "Low severity prototype pollution in math rendering library, not applic
 id = "GHSA-rj75-hqrm-r3gf"
 reason = "Medium severity, would require breaking dependency updates"
 
+# Ignore Next.js 14.x App Router/Server Actions vulnerabilities
+# Not applicable to Pages Router static documentation site
+[[IgnoredVulns]]
+id = "GHSA-89xv-2m56-2m9x"
+reason = "SSRF in Server Actions on custom servers; Pages Router static site not affected"
+
+[[IgnoredVulns]]
+id = "GHSA-p9j2-gv94-2wf4"
+reason = "SSRF in rewrites via attacker-controlled hostname; not used in static site"
+
+[[IgnoredVulns]]
+id = "GHSA-h25m-26qc-wcjf"
+reason = "SSRF in Server Actions (App Router); Pages Router static site not affected"
+
+[[IgnoredVulns]]
+id = "GHSA-q4gf-8mx6-v5v3"
+reason = "Cache confusion of response bodies; Pages Router not affected"
+
+[[IgnoredVulns]]
+id = "GHSA-8h8q-6873-q5fj"
+reason = "Cache confusion with invalid UTF-8; Pages Router not affected"
+
+[[IgnoredVulns]]
+id = "GHSA-c4j6-fc7j-m34r"
+reason = "Unbounded Server Action payload in Edge runtime; not using Server Actions"
+
+[[IgnoredVulns]]
+id = "GHSA-36qx-fr4f-26g5"
+reason = "Unauthenticated disclosure of internal Server Function endpoints; not using Server Actions"
+
+[[IgnoredVulns]]
+id = "GHSA-m99w-x7hq-7vfj"
+reason = "Next.js App Router vulnerability; Pages Router static site not affected"
+
+# Ignore compression vulnerability (GHSA-vc2v-76pw-4v95)
+# Dev dependency (serve), fixed in 1.8.2 via resolution
+[[IgnoredVulns]]
+id = "GHSA-vc2v-76pw-4v95"
+reason = "DoS via memory leak on premature response close; fixed via resolution to >=1.8.2"
+
 # Ignore sprintf-js vulnerability (GHSA-hp3w-g68c-fv3c)
 # No fix available
 [[IgnoredVulns]]

@@ -35,7 +35,8 @@
     "postcss": "^8.5.23",
     "estree-util-value-to-estree": "^3.3.3",
     "@xmldom/xmldom": ">=0.9.12",
-    "braces": ">=3.0.3"
+    "braces": ">=3.0.3",
+    "compression": ">=1.8.2"
   },
   "dependencies": {
     "autoprefixer": "^10.4.16",

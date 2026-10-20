@@ -5,9 +5,20 @@
 import { execSync } from 'child_process';
 
 const ACCEPTABLE_ADVISORIES = new Set([
-  // Next.js 14.x issues that do not apply to a static Linux-hosted docs site
+  // Next.js 14.x issues that do not apply to a static Linux-hosted docs site (Pages Router, no Server Actions)
   'GHSA-p293-qw3h-jr36', // Unauthenticated RCE on Windows-hosted servers
   'GHSA-2xp9-vwfh-vxw4', // Unauthenticated RCE in Image Optimization API with AVIF
+  // Next.js 14.x App Router/Server Actions vulnerabilities - not applicable to Pages Router static site
+  'GHSA-89xv-2m56-2m9x', // SSRF in Server Actions on custom servers
+  'GHSA-p9j2-gv94-2wf4', // SSRF in rewrites via attacker-controlled destination hostname
+  'GHSA-h25m-26qc-wcjf', // SSRF in Server Actions (App Router)
+  'GHSA-q4gf-8mx6-v5v3', // Cache confusion of response bodies
+  'GHSA-8h8q-6873-q5fj', // Cache confusion with invalid UTF-8
+  'GHSA-c4j6-fc7j-m34r', // Unbounded Server Action payload in Edge runtime
+  'GHSA-36qx-fr4f-26g5', // Unauthenticated disclosure of internal Server Function endpoints
+  'GHSA-m99w-x7hq-7vfj', // Next.js vulnerability (App Router)
+  // Compression - dev dependency (serve), not in production build
+  'GHSA-vc2v-76pw-4v95', // DoS via memory leak on premature response close (fixed in 1.8.2)
   // Mitigated via package.json resolutions
   'GHSA-vfj7-8cjw-p6xm', // braces prototype pollution, resolved to >=3.0.3
 ]);
