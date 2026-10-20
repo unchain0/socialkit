@@ -17,8 +17,6 @@ const ACCEPTABLE_ADVISORIES = new Set([
   'GHSA-c4j6-fc7j-m34r', // Unbounded Server Action payload in Edge runtime
   'GHSA-36qx-fr4f-26g5', // Unauthenticated disclosure of internal Server Function endpoints
   'GHSA-m99w-x7hq-7vfj', // Next.js vulnerability (App Router)
-  // Compression - dev dependency (serve), not in production build
-  'GHSA-vc2v-76pw-4v95', // DoS via memory leak on premature response close (fixed in 1.8.2)
   // Mitigated via package.json resolutions
   'GHSA-vfj7-8cjw-p6xm', // braces prototype pollution, resolved to >=3.0.3
 ]);
