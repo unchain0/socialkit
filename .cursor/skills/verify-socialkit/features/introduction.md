@@ -1,6 +1,7 @@
 # Introduction
 
-Introduction is the docs home page. It welcomes readers, names what SocialKit can do, and is the default landing route after launch.
+Introduction is the docs home page. It welcomes readers, names what SocialKit can do, and is the default landing route
+after launch.
 
 ## Sub-features
 
@@ -22,16 +23,26 @@ Preconditions:
 - Docs instance is healthy at `$ORIGIN` from `instance.env`.
 - `scripts/doctor.sh $PORT` prints `READY`.
 
-- **Open home.** Fetch the root. Run `scripts/drive.sh "$STATE" fetch / "$EVIDENCE/introduction.html"`. Exit code `0`, `$EVIDENCE/introduction.html.status` is `200`.
-- **Confirm identity.** Assert branding. Run `scripts/drive.sh "$STATE" assert-contains "$EVIDENCE/introduction.html" "SocialKit"`. Exit code `0`.
-- **Confirm welcome copy.** Assert the introduction heading text. Run `scripts/drive.sh "$STATE" assert-contains "$EVIDENCE/introduction.html" "Introduction"`. Exit code `0`.
-- **Confirm capability bullets.** Assert a capability phrase from `pages/index.mdx`. Run `scripts/drive.sh "$STATE" assert-contains "$EVIDENCE/introduction.html" "Video Summaries"`. Exit code `0`.
-- **Screenshot (optional).** Capture the rendered page. Run `scripts/drive.sh "$STATE" screenshot / "$EVIDENCE/introduction.png"`. Exit code `0`, or a `.skipped` marker if Chrome is absent.
-- **Proof.** Keep `introduction.html`, `.status`, `.exit`, and optional `.png` under the evidence directory. Cleanup must not delete them.
+- **Open home.** Fetch the root. Run `scripts/drive.sh "$STATE" fetch / "$EVIDENCE/introduction.html"`. Exit code `0`,
+  `$EVIDENCE/introduction.html.status` is `200`.
+- **Confirm identity.** Assert branding. Run
+  `scripts/drive.sh "$STATE" assert-contains "$EVIDENCE/introduction.html" "SocialKit"`. Exit code `0`.
+- **Confirm welcome copy.** Assert the introduction heading text. Run
+  `scripts/drive.sh "$STATE" assert-contains "$EVIDENCE/introduction.html" "Introduction"`. Exit code `0`.
+- **Confirm capability bullets.** Assert a capability phrase from `pages/index.mdx`. Run
+  `scripts/drive.sh "$STATE" assert-contains "$EVIDENCE/introduction.html" "Video Summaries"`. Exit code `0`.
+- **Screenshot (optional).** Capture the rendered page. Run
+  `scripts/drive.sh "$STATE" screenshot / "$EVIDENCE/introduction.png"`. Exit code `0`, or a `.skipped` marker if Chrome
+  is absent.
+- **Proof.** Keep `introduction.html`, `.status`, `.exit`, and optional `.png` under the evidence directory. Cleanup
+  must not delete them.
 
 ## Gotchas
 
 - Port `3000` is the human README default. Verification uses `4310–4390` only.
-- The Logo component hydrates after mount; SSR HTML may omit the SVG briefly, but page text still contains `SocialKit` via title/footer/content.
-- A bare HTTP 200 without the `SocialKit` marker can mean a foreign process on the port. Trust doctor, not the port number alone.
-- External `Home Page` nav item in `_meta.js` points at `https://www.socialkit.dev`. Do not follow it during local verification.
+- The Logo component hydrates after mount; SSR HTML may omit the SVG briefly, but page text still contains `SocialKit`
+  via title/footer/content.
+- A bare HTTP 200 without the `SocialKit` marker can mean a foreign process on the port. Trust doctor, not the port
+  number alone.
+- External `Home Page` nav item in `_meta.js` points at `https://www.socialkit.dev`. Do not follow it during local
+  verification.
