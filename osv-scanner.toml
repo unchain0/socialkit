@@ -70,6 +70,60 @@ reason = "Next.js App Router vulnerability; Pages Router static site not affecte
 id = "GHSA-vc2v-76pw-4v95"
 reason = "DoS via memory leak on premature response close; fixed via resolution to >=1.8.2"
 
+# Ignore additional Next.js 14.x vulnerabilities (moderate severity, App Router/Server Actions)
+# Not applicable to Pages Router static documentation site
+[[IgnoredVulns]]
+id = "GHSA-3g8h-86w9-wvmq"
+reason = "Next.js App Router vulnerability; Pages Router static site not affected"
+
+[[IgnoredVulns]]
+id = "GHSA-3x4c-7xq6-9pq8"
+reason = "Next.js App Router vulnerability; Pages Router static site not affected"
+
+[[IgnoredVulns]]
+id = "GHSA-4633-3j49-mh5q"
+reason = "Cache confusion with invalid UTF-8; Pages Router not affected"
+
+[[IgnoredVulns]]
+id = "GHSA-4c39-4ccg-62r3"
+reason = "Unbounded Server Action payload in Edge runtime; not using Server Actions"
+
+[[IgnoredVulns]]
+id = "GHSA-68g3-v927-f742"
+reason = "Cache confusion of response bodies; Pages Router not affected"
+
+[[IgnoredVulns]]
+id = "GHSA-955p-x3mx-jcvp"
+reason = "Unauthenticated disclosure of internal Server Function endpoints; not using Server Actions"
+
+[[IgnoredVulns]]
+id = "GHSA-9g9p-9gw9-jx7f"
+reason = "Next.js App Router vulnerability; Pages Router static site not affected"
+
+[[IgnoredVulns]]
+id = "GHSA-ffhc-5mcf-pf4q"
+reason = "Next.js App Router vulnerability; Pages Router static site not affected"
+
+[[IgnoredVulns]]
+id = "GHSA-ggv3-7p47-pfv8"
+reason = "Next.js App Router vulnerability; Pages Router static site not affected"
+
+[[IgnoredVulns]]
+id = "GHSA-gx5p-jg67-6x7h"
+reason = "Next.js App Router vulnerability; Pages Router static site not affected"
+
+[[IgnoredVulns]]
+id = "GHSA-h64f-5h5j-jqjh"
+reason = "Next.js App Router vulnerability; Pages Router static site not affected"
+
+[[IgnoredVulns]]
+id = "GHSA-vfv6-92ff-j949"
+reason = "Next.js App Router vulnerability; Pages Router static site not affected"
+
+[[IgnoredVulns]]
+id = "GHSA-wfc6-r584-vfw7"
+reason = "Next.js App Router vulnerability; Pages Router static site not affected"
+
 # Ignore sprintf-js vulnerability (GHSA-hp3w-g68c-fv3c)
 # No fix available
 [[IgnoredVulns]]
