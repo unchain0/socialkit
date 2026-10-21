@@ -131,18 +131,23 @@ on every job, GitHub-hosted `ubuntu-latest`, no `continue-on-error`.
 The site is configured for static export (`output: 'export'` in `next.config.mjs`). Running `yarn build` generates a
 self-contained `out/` directory suitable for any static host (GitHub Pages, Netlify, Cloudflare Pages, etc.).
 
+By default, the build targets **root deployment** (e.g., custom domain `https://www.socialkit.dev`) with no `basePath`
+or `assetPrefix`. Internal links and `_next` assets resolve at the domain root.
+
 ### GitHub Pages project site
 
-For the standard GitHub Pages project site deployment (e.g., `https://<user>.github.io/socialkit`), the build is
-configured with `basePath: '/socialkit'` and `assetPrefix: '/socialkit'` via environment variables
-`NEXT_PUBLIC_BASE_PATH` and `NEXT_PUBLIC_ASSET_PREFIX`. These default to `/socialkit` but can be overridden at build
-time:
+For GitHub Pages project site deployment (e.g., `https://<user>.github.io/socialkit`), explicitly set the environment
+variables at build time:
 
 ```bash
-# Custom domain or root deployment (no base path)
-NEXT_PUBLIC_BASE_PATH='' NEXT_PUBLIC_ASSET_PREFIX='' yarn build
+NEXT_PUBLIC_BASE_PATH='/socialkit' NEXT_PUBLIC_ASSET_PREFIX='/socialkit' yarn build
+```
 
-# Different project path
+### Custom project path
+
+For a different subpath, adjust the env vars accordingly:
+
+```bash
 NEXT_PUBLIC_BASE_PATH='/my-project' NEXT_PUBLIC_ASSET_PREFIX='/my-project' yarn build
 ```
 

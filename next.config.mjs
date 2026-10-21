@@ -6,19 +6,18 @@ const withNextra = nextra({
 });
 
 /** @type {import('next').NextConfig} */
-const nextConfig = {
+export const nextConfig = {
   poweredByHeader: false,
   reactStrictMode: true,
   output: 'export',
   images: { unoptimized: true },
-  // Only apply basePath/assetPrefix for production builds (GitHub Pages).
-  // Local dev (yarn dev) runs without these env vars and should serve at root.
-  basePath: process.env.NODE_ENV === 'production'
-    ? process.env.NEXT_PUBLIC_BASE_PATH ?? '/socialkit'
-    : '',
-  assetPrefix: process.env.NODE_ENV === 'production'
-    ? process.env.NEXT_PUBLIC_ASSET_PREFIX ?? '/socialkit'
-    : '',
+  // Apply basePath/assetPrefix only when explicitly configured via env vars.
+  // Default to root deployment (e.g., custom domain https://www.socialkit.dev).
+  // For GitHub Pages project site, set NEXT_PUBLIC_BASE_PATH=/socialkit and
+  // NEXT_PUBLIC_ASSET_PREFIX=/socialkit at build time.
+  basePath: process.env.NEXT_PUBLIC_BASE_PATH ?? '',
+  assetPrefix: process.env.NEXT_PUBLIC_ASSET_PREFIX ?? '',
 };
 
 export default withNextra(nextConfig);
+
