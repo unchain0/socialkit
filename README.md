@@ -106,6 +106,46 @@ yarn test:coverage
 yarn audit
 ```
 
+## Standards
+
+### Security headers
+
+This site uses Next.js static export (`output: 'export'`). **Next.js does not apply custom headers to static output.**
+Therefore, security headers (CSP, HSTS, `X-Content-Type-Options`, `Referrer-Policy`, `X-Frame-Options` /
+`frame-ancestors`) are not included in the generated `out/` directory.
+
+Configure equivalent headers on your hosting platform:
+
+- **Netlify**: add a `_headers` file to `public/` (copied to `out/`) or configure in the Netlify UI
+- **Cloudflare Pages**: add a `_headers` file to `public/` or configure via Cloudflare dashboard
+- **GitHub Pages**: use a custom domain with Cloudflare/CloudFront in front, or configure via GitHub Pages custom
+  headers (limited)
+- **Nginx/Apache/Caddy**: add headers in the web server configuration for the static file root
+- **Vercel**: use `vercel.json` with `headers` (not applicable to pure static export without Vercel build)
+
+Example `_headers` for Netlify/Cloudflare Pages:
+
+```
+/*
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'
+  Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  X-Frame-Options: DENY
+```
+
+Adjust the CSP to match your actual script/style/image sources. The example above allows inline scripts/styles which
+Nextra may require.
+
+### Coverage gate
+
+Branch coverage threshold: **≥90%** on covered modules (`lib/**`, `components/counters.tsx`). Enforced by
+`yarn test:coverage` in CI.
+
+### Dependency audit
+
+High/critical vulnerabilities block CI via `yarn audit` (npm audit + OSV-Scanner with configured ignores).
+
 ## CI/CD
 
 Workflow: `.github/workflows/ci.yml` on every push and PR to `main`.
